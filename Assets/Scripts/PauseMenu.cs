@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
@@ -16,13 +14,14 @@ public class PauseMenu : MonoBehaviour
                 Time.timeScale = 0;
                 isPaused = true;
                 pauseMenu.SetActive(true);
+                SettingsManager.SetPauseState(true);
                 return;
             }
 
             isPaused = false;
+            SettingsManager.SetPauseState(false);
             pauseMenu.SetActive(false);
             Time.timeScale = 1;
-
         }
     }
 }

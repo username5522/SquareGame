@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SettingsManager : MonoBehaviour
 {
+    private static bool isPaused = false;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -10,6 +13,17 @@ public class SettingsManager : MonoBehaviour
     private void Start()
     {
         LoadSettings();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Update()
+    {
+        UpdateCursorVisibility();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void LoadSettings()
@@ -30,5 +44,28 @@ public class SettingsManager : MonoBehaviour
             Resolution resolution = resolutions[resolutionIndex];
             Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreenMode);
         }
+    }
+
+    private void UpdateCursorVisibility()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            return;
+        }
+
+        Cursor.visible = isPaused;
+        Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        UpdateCursorVisibility();
+    }
+
+    public static void SetPauseState(bool paused)
+    {
+        isPaused = paused;
     }
 }
