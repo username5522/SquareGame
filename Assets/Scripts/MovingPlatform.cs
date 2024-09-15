@@ -2,51 +2,51 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
-    public float speed;
-    public int startingPoint;
-    public Transform[] points;
+    public float speed = 1f;
+    public float waitTime = 0.5f;
+    public bool loop = true;
+    public Vector3[] waypoints;
 
-    private int i;
+    private int currentWaypointIndex = 0;
+    private float lastWaypointSwitchTime;
 
     void Start()
     {
-        transform.position = points[startingPoint].position;
+        if (waypoints.Length > 0) transform.position = waypoints[0];
+        lastWaypointSwitchTime = Time.time;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (Vector2.Distance(transform.position, points[i].position) < .02f)
-        {
-            i++;
-            if (i == points.Length)
-            {
-                i = 0;
-            }
-        }
+        if (waypoints.Length <= 1) return;
 
-        transform.position = Vector2.MoveTowards(
-            transform.position,
-            points[i].position,
-            speed * Time.deltaTime
-        );
-    }
+        Vector3 targetPosition = waypoints[currentWaypointIndex];
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.fixedDeltaTime);
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.collider.CompareTag("Player"))
+        if (transform.position == targetPosition)
         {
-            if (transform.position.y < other.transform.position.y)
+            if (Time.time - lastWaypointSwitchTime < waitTime) return;
+
+            currentWaypointIndex++;
+            lastWaypointSwitchTime = Time.time;
+
+            if (currentWaypointIndex >= waypoints.Length)
             {
-                other.transform.SetParent(transform);
+                if (loop) currentWaypointIndex = 0;
+                else return;
             }
         }
     }
 
-    private void OnCollisionExit2D(Collision2D other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.collider.CompareTag("Player"))
-        {
+        if (other.CompareTag("Player"))
+            other.transform.SetParent(transform);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
             other.transform.SetParent(null);
-        }
     }
 }

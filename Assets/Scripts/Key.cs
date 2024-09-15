@@ -22,6 +22,7 @@ public class Key : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Renderer>().enabled = false;
 
+        // make-shift hitstop
         Time.timeScale = slowdownFactor;
 
         door.SetActive(false);

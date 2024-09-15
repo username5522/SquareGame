@@ -582,7 +582,8 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Standalone: UNITY_DISABLE_DETERMINISTIC_COMPILATION
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
@@ -606,7 +607,7 @@ PlayerSettings:
   allowUnsafeCode: 0
   useDeterministicCompilation: 0
   enableRoslynAnalyzers: 1
-  selectedPlatform: 1
+  selectedPlatform: 0
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 1

@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
     }
 
-    void CheckGrounded() 
+    void CheckGrounded()
     {
         isGrounded = Physics2D.OverlapCircle(
             groundCheck.position,
@@ -60,7 +60,8 @@ public class PlayerController : MonoBehaviour
         );
     }
 
-    void HandleMovement() {
+    void HandleMovement()
+    {
         moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * speed * speedMultiplier, rb.velocity.y);
     }
@@ -71,11 +72,11 @@ public class PlayerController : MonoBehaviour
         speedMultiplier = 1f;
     }
 
-    void HandleJump() 
+    void HandleJump()
     {
         if (Input.GetButtonDown("Jump"))
         {
-            if (extraJumps > 0) 
+            if (extraJumps > 0)
             {
                 PerformJump();
                 extraJumps--;
@@ -87,10 +88,11 @@ public class PlayerController : MonoBehaviour
                 jumpTimeCounter = jumpTime;
             }
         }
-        
+
         if (Input.GetButtonDown("Jump"))
         {
-            if (isJumping && jumpTimeCounter > 0) {
+            if (isJumping && jumpTimeCounter > 0)
+            {
                 rb.velocity = Vector2.up * jumpForce;
                 jumpTimeCounter -= Time.deltaTime;
             }
@@ -109,33 +111,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void HandleFallMultiplier() 
+    void HandleFallMultiplier()
     {
-        if ((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)))
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
             if (rb.velocity.y < 0)
-            {
-                rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-            }
+                rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
             else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
-            {
-                rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-            }
+                rb.velocity += (lowJumpMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
         }
     }
 
     void HandleDashing()
     {
-        if ((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) && 
-            Input.GetButton("Horizontal") && isGrounded && !isDashing && 
+        if ((Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) &&
+            Input.GetButton("Horizontal") && isGrounded && !isDashing &&
             !isCooldownActive)
         {
-                speedMultiplierCounter = speedMultiplierTime;
-                speedMultiplier = 1.5f;
-                isDashing = true;
-                isCooldownActive = false;
+            speedMultiplierCounter = speedMultiplierTime;
+            speedMultiplier = 1.5f;
+            isDashing = true;
+            isCooldownActive = false;
         }
-        
+
         if (isDashing)
         {
             speedMultiplierCounter -= Time.deltaTime;
@@ -146,7 +144,7 @@ public class PlayerController : MonoBehaviour
                 speedMultCooldownCounter = speedMultCooldown;
             }
         }
-        
+
         if (isCooldownActive)
         {
             speedMultCooldownCounter -= Time.deltaTime;
@@ -157,14 +155,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (speedMultiplierCounter > 0)
-        {
-            speedMultiplierCounter -= Time.deltaTime;
-        }
-        else
-        {
-            speedMultiplier = 1f;
-        }
+        if (speedMultiplierCounter > 0) speedMultiplierCounter -= Time.deltaTime;
+        else speedMultiplier = 1f;
     }
 
 }

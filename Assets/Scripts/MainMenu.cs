@@ -1,23 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void ExitButton()
+    [System.Serializable]
+    public class SceneReference
     {
-        Application.Quit();
-        Debug.Log("Quit!"); // This is just for testing purposes
+        public string sceneName;
+        public int sceneIndex;
     }
 
-    public void TutorialButton()
-    {
-        SceneManager.LoadScene(1);
-    }
+    [SerializeField] private SceneReference tutorialScene;
+    [SerializeField] private SceneReference gameScene;
 
-    public void StartButton()
+    public void ExitButton() => Application.Quit();
+    public void TutorialButton() => LoadScene(tutorialScene);
+    public void StartButton() => LoadScene(gameScene);
+
+    private void LoadScene(SceneReference scene)
     {
-        SceneManager.LoadScene(3);
+        if (!string.IsNullOrEmpty(scene.sceneName))
+            SceneManager.LoadScene(scene.sceneName);
+        else SceneManager.LoadScene(scene.sceneIndex);
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
@@ -85,4 +84,4 @@ public class CameraShake : MonoBehaviour
 }
 
 
-// thanks to https://github.com/Dawnosaur/
+// credits to https://github.com/Dawnosaur/

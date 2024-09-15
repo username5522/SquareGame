@@ -7,7 +7,7 @@ public class Finish : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "finish")
+        if (collision.gameObject.CompareTag("finish"))
         {
             SceneManager.LoadScene(targetScene);
         }

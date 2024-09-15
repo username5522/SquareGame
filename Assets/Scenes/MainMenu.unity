@@ -3329,6 +3329,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4fe36b512a9992408884741f099bdce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialScene:
+    sceneName: TLevel1
+    sceneIndex: 1
+  gameScene:
+    sceneName: Level1
+    sceneIndex: 3
 --- !u!114 &1115659432
 MonoBehaviour:
   m_ObjectHideFlags: 0
